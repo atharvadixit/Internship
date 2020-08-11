@@ -1,10 +1,10 @@
-package com.example.SpringApp;
+package com.example.UserApplication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringAppApplicationTests {
+class MongoUserApplicationTests {
 
 	@Test
 	void contextLoads() {
