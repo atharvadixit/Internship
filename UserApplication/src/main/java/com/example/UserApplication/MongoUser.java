@@ -11,6 +11,13 @@ public @Data class MongoUser {
     public Long contact;
     public Address address;
 
+    public MongoUser()
+    {
+        this.name="";
+        this.email="";
+        this.contact=Long.valueOf(0);
+        this.address=new Address("","","");
+    }
 
     public MongoUser(String name, String email, Long contact, Address address)
     {

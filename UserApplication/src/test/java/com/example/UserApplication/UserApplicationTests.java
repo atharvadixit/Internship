@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MongoUserApplicationTests {
+class UserApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void contextLoads() throws Exception{
+//		System.out.print("This is working!");
 	}
+
 
 }

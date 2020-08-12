@@ -26,11 +26,9 @@ public class UserService {
 
     public String deleteDataFromMySQLService(String email)
     {
-        Optional<SQLUser> checkIfUserPresent= sqlUserRepository.findById(email);
-        if(checkIfUserPresent.isPresent())
+        if(sqlUserRepository.existsById(email))
         {
-            SQLUser user=checkIfUserPresent.get();
-            sqlUserRepository.delete(user);
+            sqlUserRepository.deleteById(email);
             return "User with email: " + email +" deleted successfully!";
         }
         else
@@ -59,8 +57,8 @@ public class UserService {
         return sqlUserRepository.findAll();
     }
 
-    public List<SQLUser> getDataFromMongoService()
+    public List<MongoUser> getDataFromMongoService()
     {
-        return sqlUserRepository.findAll();
+        return mongoUserRepository.findAll();
     }
 }

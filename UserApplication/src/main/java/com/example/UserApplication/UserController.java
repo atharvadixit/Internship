@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/getDataFromMongo")
-    public List<SQLUser> getDataFromMongo()
+    public List<MongoUser> getDataFromMongo()
     {
         return user_service.getDataFromMongoService();
     }
