@@ -30,100 +30,69 @@ public class UserServiceTest {
     @Test
     public void testInsertInSqlByRepository()
     {
-        SQLUser sqlUser=new SQLUser();
-        sqlUser.setName("ABC");
-        sqlUser.setEmail("abc@gmail.com");
-        sqlUser.setContact(Long.valueOf(988124311));
-        sqlUser.setStreet("XYZ");
-        sqlUser.setArea("Area");
-        sqlUser.setCity("Pune");
+        SQLUser sqlUser=new SQLUser("ABC", "abc@gmail.com", 9881243118L, "XYZ", "Area", "Pune");
 
         Mockito.when(testSqlUserRepository.save(sqlUser)).thenReturn(sqlUser);
 
         assertThat(userService.insertInSqlByRepository(sqlUser)).isEqualTo(sqlUser);
+
+       Mockito.verify(testSqlUserRepository,Mockito.times(1)).save(sqlUser);
     }
 
     @Test
     public void testInsertInMongoByRepository()
     {
-        MongoUser mongoUser=new MongoUser();
-        mongoUser.setName("ABC");
-        mongoUser.setEmail("abc@gmail.com");
-        mongoUser.setContact(Long.valueOf(988124311));
-        mongoUser.setAddress(new Address("XYZ", "Area", "Pune"));
+        MongoUser mongoUser=new MongoUser("ABC", "abc@gmail.com", 9881243118L, new Address("XYZ", "Area", "Pune"));
 
         Mockito.when(testMongoUserRepository.save(mongoUser)).thenReturn(mongoUser);
 
         assertThat(userService.insertInMongoByRepository(mongoUser)).isEqualTo(mongoUser);
+
+        Mockito.verify(testMongoUserRepository,Mockito.times(1)).save(mongoUser);
     }
 
-    @Test
-    public void testDeleteDataFromMySQLService()
-    {
-        SQLUser sqlUser=new SQLUser();
-        sqlUser.setName("ABC");
-        sqlUser.setEmail("abc@gmail.com");
-        sqlUser.setContact(Long.valueOf(988124311));
-        sqlUser.setStreet("XYZ");
-        sqlUser.setArea("Area");
-        sqlUser.setCity("Pune");
-
-        Mockito.when(testSqlUserRepository.existsById(sqlUser.email)).thenReturn(true);
-        Mockito.when(testSqlUserRepository.existsById(sqlUser.getEmail())).thenReturn(false);
-
-        assertFalse(testSqlUserRepository.existsById(sqlUser.getEmail()));
-    }
+//    @Test
+//    public void testDeleteDataFromMySQLService()
+//    {
+//        SQLUser sqlUser=new SQLUser("ABC", "abc@gmail.com", 9881243118L, "XYZ", "Area", "Pune");
+//
+//        Mockito.when(testSqlUserRepository.existsById("abc@gmail.com")).thenReturn(false);
+//        Mockito.when(testSqlUserRepository.deleteById(("abc@gmail.com")).thenReturn();
+//        assertFalse(testSqlUserRepository.existsById(sqlUser.getEmail()));
+//
+//        Mockito.verify(testSqlUserRepository,Mockito.times(1)).deleteById(sqlUser.getEmail());
+//    }
 
     @Test
     public void testGetDataFromMySQLService()
     {
-        SQLUser sqlUser=new SQLUser();
-        sqlUser.setName("ABC");
-        sqlUser.setEmail("abc@gmail.com");
-        sqlUser.setContact(Long.valueOf(988124311));
-        sqlUser.setStreet("XYZ");
-        sqlUser.setArea("Area");
-        sqlUser.setCity("Pune");
+        SQLUser sqlUser=new SQLUser("ABC", "abc@gmail.com", 9881243118L, "XYZ", "Area", "Pune");
 
-        SQLUser sqlUser1=new SQLUser();
-        sqlUser1.setName("DEF");
-        sqlUser1.setEmail("def@gmail.com");
-        sqlUser1.setContact(Long.valueOf(735000038));
-        sqlUser1.setStreet("PQR");
-        sqlUser1.setArea("Katraj");
-        sqlUser1.setCity("Pune");
+        SQLUser sqlUser1=new SQLUser("DEF", "def@gmail.com", 3881243118L, "Street", "Area", "Pune");
 
-        List<SQLUser> userList = new ArrayList<>();
-        userList.add(sqlUser);
-        userList.add(sqlUser1);
+        List<SQLUser> userList = List.of(sqlUser,sqlUser1);
+        Mockito.when(testSqlUserRepository.findByCity("Pune")).thenReturn(userList);
 
-        Mockito.when(testSqlUserRepository.findAll()).thenReturn(userList);
+        assertThat(userService.getDataFromMySQLService(sqlUser.getCity())).isEqualTo(userList);
 
-        assertThat(userService.getDataFromMySQLService()).isEqualTo(userList);
+        Mockito.verify(testSqlUserRepository,Mockito.times(1)).findByCity(sqlUser.getCity());
     }
 
     @Test
     public void testGetDataFromMongoService()
     {
-        MongoUser mongoUser=new MongoUser();
-        mongoUser.setName("ABC");
-        mongoUser.setEmail("abc@gmail.com");
-        mongoUser.setContact(Long.valueOf(988124311));
-        mongoUser.setAddress(new Address("XYZ", "Area", "Pune"));
+        MongoUser mongoUser=new MongoUser("ABC", "abc@gmail.com", 9881243118L, new Address("XYZ", "Area", "Pune"));
 
-        MongoUser mongoUser1=new MongoUser();
-        mongoUser1.setName("DEF");
-        mongoUser1.setEmail("def@gmail.com");
-        mongoUser1.setContact(Long.valueOf(735000038));
-        mongoUser1.setAddress(new Address("PQR", "Katraj", "Pune"));
+        MongoUser mongoUser1=new MongoUser("DEF", "def@gmail.com", 9881243118L, new Address("Street", "Katraj", "Pune"));
 
-        List<MongoUser> userList = new ArrayList<>();
-        userList.add(mongoUser);
-        userList.add(mongoUser1);
 
-        Mockito.when(testMongoUserRepository.findAll()).thenReturn(userList);
+        List<MongoUser> userList = List.of(mongoUser,mongoUser1);
 
-        assertThat(userService.getDataFromMongoService()).isEqualTo(userList);
+        Mockito.when(testMongoUserRepository.findByCity("Pune")).thenReturn(userList);
+
+        assertThat(userService.getDataFromMongoService(mongoUser.getAddress().getCity())).isEqualTo(userList);
+
+        Mockito.verify(testMongoUserRepository,Mockito.times(1)).findByCity(mongoUser.getAddress().getCity());
     }
 
 }

@@ -24,41 +24,38 @@ public class UserService {
         return mongoUserRepository.save(user);
     }
 
-    public String deleteDataFromMySQLService(String email)
+    public String deleteDataFromMySQLService (String email)
     {
-        if(sqlUserRepository.existsById(email))
-        {
+        try {
             sqlUserRepository.deleteById(email);
-            return "User with email: " + email +" deleted successfully!";
         }
-        else
+        catch (Exception e)
         {
             return "User with email: " + email +" not found!";
         }
+        return "User with email: " + email +" deleted successfully!";
     }
 
     public String deleteDataFromMongoService(String email)
     {
-        Optional<MongoUser> checkIfUserPresent= mongoUserRepository.findById(email);
-        if(checkIfUserPresent.isPresent())
-        {
-            MongoUser user=checkIfUserPresent.get();
-            mongoUserRepository.delete(user);
+        try {
+            mongoUserRepository.deleteById(email);
             return "User with email: " + email +" deleted successfully!";
         }
-        else
-        {
-            return "User with email: " + email +" not found!";
+        catch (Exception e) {
+//            return "User with email: " + email + " not found!";
+            System.out.print(e);
+            return ":(";
         }
     }
 
-    public List<SQLUser> getDataFromMySQLService()
+    public List<SQLUser> getDataFromMySQLService(String city)
     {
-        return sqlUserRepository.findAll();
+        return sqlUserRepository.findByCity(city);
     }
 
-    public List<MongoUser> getDataFromMongoService()
+    public List<MongoUser> getDataFromMongoService(String city)
     {
-        return mongoUserRepository.findAll();
+        return mongoUserRepository.findByCity(city);
     }
 }

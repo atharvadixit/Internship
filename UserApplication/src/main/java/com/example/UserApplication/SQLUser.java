@@ -1,6 +1,9 @@
 package com.example.UserApplication;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Id;
 
 import javax.persistence.Column;
@@ -9,6 +12,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 public @Data class SQLUser {
 
     @Column(name = "name")
@@ -17,7 +22,7 @@ public @Data class SQLUser {
     @Column(name = "email")
     public String email;
     @Column(name = "contact")
-    public Long contact;
+    public long contact;
     @Column(name = "street")
     public String street;
     @Column(name = "area")
@@ -25,22 +30,4 @@ public @Data class SQLUser {
     @Column(name = "city")
     public String city;
 
-    public SQLUser()
-    {
-        name="";
-        email="default@email";
-        contact=Long.valueOf(0);
-        street="";
-        area="";
-        city="";
-    }
-
-    public SQLUser(String name, String email, Long contact, String street, String area, String city) {
-        this.name = name;
-        this.email = email;
-        this.contact = contact;
-        this.street = street;
-        this.area = area;
-        this.city = city;
-    }
 }
